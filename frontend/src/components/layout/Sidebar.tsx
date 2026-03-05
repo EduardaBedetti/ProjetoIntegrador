@@ -8,20 +8,46 @@ import {
   Ship,
   ChevronLeft,
   ChevronRight,
+  Users,
+  BarChart3,
+  Settings,
+  type LucideIcon,
 } from 'lucide-react'
 import { useState } from 'react'
 import { cn } from '@/utils/cn'
+import { useAuth } from '@/auth/useAuth'
+import type { Resource } from '@/auth/permissions'
 
-const navigation = [
-  { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-  { name: 'Novo Processo', href: '/processos/novo', icon: FilePlus },
-  { name: 'Processos', href: '/processos', icon: List },
-  { name: 'Conferencia', href: '/conferencia', icon: GitCompare },
-  { name: 'CE Mercante', href: '/ce-mercante', icon: FileCheck },
+interface NavItem {
+  name: string
+  href: string
+  icon: LucideIcon
+  resource: Resource
+}
+
+const allNavItems: NavItem[] = [
+  { name: 'Dashboard', href: '/', icon: LayoutDashboard, resource: 'dashboard' },
+  { name: 'Novo Processo', href: '/processos/novo', icon: FilePlus, resource: 'processos' },
+  { name: 'Processos', href: '/processos', icon: List, resource: 'processos' },
+  { name: 'Conferencia', href: '/conferencia', icon: GitCompare, resource: 'conferencia' },
+  { name: 'CE Mercante', href: '/ce-mercante', icon: FileCheck, resource: 'ce-mercante' },
+  { name: 'Relatorios', href: '/relatorios', icon: BarChart3, resource: 'relatorios' },
+  { name: 'Usuarios', href: '/usuarios', icon: Users, resource: 'usuarios' },
+  { name: 'Configuracoes', href: '/configuracoes', icon: Settings, resource: 'configuracoes' },
 ]
 
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false)
+  const { canAccess, can } = useAuth()
+
+  // Filtra itens de navegacao baseado nas permissoes do usuario
+  const navigation = allNavItems.filter((item) => {
+    // "Novo Processo" so aparece para quem pode criar
+    if (item.href === '/processos/novo') {
+      return can('processos', 'create')
+    }
+    return canAccess(item.resource)
+  })
 
   return (
     <aside

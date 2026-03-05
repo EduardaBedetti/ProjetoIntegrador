@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button'
 import { StatusBadge } from '@/components/ui/StatusBadge'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { PageLoading } from '@/components/ui/LoadingSpinner'
+import { ProtectedComponent } from '@/components/ProtectedComponent'
 import { useProcessos } from '@/hooks/useProcessos'
 import { formatPeso, formatData } from '@/utils/format'
 import type { StatusProcesso, TipoCarga } from '@/types'
@@ -48,9 +49,11 @@ export function ProcessoList() {
         title="Processos"
         subtitle={`${total} processo${total !== 1 ? 's' : ''} encontrado${total !== 1 ? 's' : ''}`}
         action={
-          <Button onClick={() => navigate('/processos/novo')}>
-            Novo Processo
-          </Button>
+          <ProtectedComponent resource="processos" action="create">
+            <Button onClick={() => navigate('/processos/novo')}>
+              Novo Processo
+            </Button>
+          </ProtectedComponent>
         }
       />
 

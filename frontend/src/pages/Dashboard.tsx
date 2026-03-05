@@ -13,6 +13,7 @@ import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { StatusBadge } from '@/components/ui/StatusBadge'
 import { PageLoading } from '@/components/ui/LoadingSpinner'
+import { ProtectedComponent } from '@/components/ProtectedComponent'
 import { useDashboardStats } from '@/hooks/useProcessos'
 import { useProcessos } from '@/hooks/useProcessos'
 import { formatData } from '@/utils/format'
@@ -61,9 +62,11 @@ export function Dashboard() {
         title="Dashboard"
         subtitle="Visao geral dos processos de importacao"
         action={
-          <Button onClick={() => navigate('/processos/novo')}>
-            Novo Processo
-          </Button>
+          <ProtectedComponent resource="processos" action="create">
+            <Button onClick={() => navigate('/processos/novo')}>
+              Novo Processo
+            </Button>
+          </ProtectedComponent>
         }
       />
 
@@ -152,56 +155,62 @@ export function Dashboard() {
                 </h2>
               </div>
               <CardContent className="space-y-3">
-                <button
-                  onClick={() => navigate('/processos/novo')}
-                  className="flex w-full items-center gap-3 rounded-lg border border-slate-200 p-3 text-left transition-colors hover:bg-slate-50"
-                >
-                  <div className="rounded-lg bg-primary-50 p-2">
-                    <Package className="h-4 w-4 text-primary-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-slate-700">
-                      Cadastrar Processo
-                    </p>
-                    <p className="text-xs text-slate-500">
-                      Novo MBL/HBL
-                    </p>
-                  </div>
-                </button>
+                <ProtectedComponent resource="processos" action="create">
+                  <button
+                    onClick={() => navigate('/processos/novo')}
+                    className="flex w-full items-center gap-3 rounded-lg border border-slate-200 p-3 text-left transition-colors hover:bg-slate-50"
+                  >
+                    <div className="rounded-lg bg-primary-50 p-2">
+                      <Package className="h-4 w-4 text-primary-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-slate-700">
+                        Cadastrar Processo
+                      </p>
+                      <p className="text-xs text-slate-500">
+                        Novo MBL/HBL
+                      </p>
+                    </div>
+                  </button>
+                </ProtectedComponent>
 
-                <button
-                  onClick={() => navigate('/conferencia')}
-                  className="flex w-full items-center gap-3 rounded-lg border border-slate-200 p-3 text-left transition-colors hover:bg-slate-50"
-                >
-                  <div className="rounded-lg bg-warning-50 p-2">
-                    <AlertTriangle className="h-4 w-4 text-warning-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-slate-700">
-                      Conferir Documentos
-                    </p>
-                    <p className="text-xs text-slate-500">
-                      MBL vs HBL vs CE
-                    </p>
-                  </div>
-                </button>
+                <ProtectedComponent resource="conferencia" action="update">
+                  <button
+                    onClick={() => navigate('/conferencia')}
+                    className="flex w-full items-center gap-3 rounded-lg border border-slate-200 p-3 text-left transition-colors hover:bg-slate-50"
+                  >
+                    <div className="rounded-lg bg-warning-50 p-2">
+                      <AlertTriangle className="h-4 w-4 text-warning-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-slate-700">
+                        Conferir Documentos
+                      </p>
+                      <p className="text-xs text-slate-500">
+                        MBL vs HBL vs CE
+                      </p>
+                    </div>
+                  </button>
+                </ProtectedComponent>
 
-                <button
-                  onClick={() => navigate('/ce-mercante')}
-                  className="flex w-full items-center gap-3 rounded-lg border border-slate-200 p-3 text-left transition-colors hover:bg-slate-50"
-                >
-                  <div className="rounded-lg bg-success-50 p-2">
-                    <CheckCircle className="h-4 w-4 text-success-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-slate-700">
-                      Registrar CE Mercante
-                    </p>
-                    <p className="text-xs text-slate-500">
-                      CE do HBL
-                    </p>
-                  </div>
-                </button>
+                <ProtectedComponent resource="ce-mercante" action="update">
+                  <button
+                    onClick={() => navigate('/ce-mercante')}
+                    className="flex w-full items-center gap-3 rounded-lg border border-slate-200 p-3 text-left transition-colors hover:bg-slate-50"
+                  >
+                    <div className="rounded-lg bg-success-50 p-2">
+                      <CheckCircle className="h-4 w-4 text-success-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-slate-700">
+                        Registrar CE Mercante
+                      </p>
+                      <p className="text-xs text-slate-500">
+                        CE do HBL
+                      </p>
+                    </div>
+                  </button>
+                </ProtectedComponent>
               </CardContent>
             </Card>
           </div>
